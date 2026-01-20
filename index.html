@@ -3,50 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Always With You 🌙</title>
+<title>For You 🌙</title>
 
 <style>
 body {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Georgia', serif;
     background: radial-gradient(circle at top, #1b1f3b, #0b0f24);
-    color: #eaeaea;
+    color: #f2f2f2;
     overflow-x: hidden;
 }
 
 .container {
     text-align: center;
-    padding: 40px 20px;
+    padding: 40px 20px 80px;
 }
 
 h1 {
-    font-size: 2.3em;
+    font-size: 2.2em;
     color: #ffd6e8;
+    font-family: 'Poppins', sans-serif;
 }
 
-p {
-    font-size: 1.1em;
-    max-width: 620px;
-    margin: 20px auto;
-    line-height: 1.6;
-}
-
-/* Glass card */
-.card {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 25px;
+/* Breathing circle */
+.breathing {
+    width: 120px;
+    height: 120px;
     margin: 30px auto;
-    max-width: 520px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    border-radius: 50%;
+    background: rgba(255, 214, 232, 0.4);
+    animation: breathe 6s ease-in-out infinite;
+}
+
+@keyframes breathe {
+    0% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.35); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.6; }
+}
+
+.breath-text {
+    font-size: 0.95em;
+    opacity: 0.8;
+    margin-top: 10px;
 }
 
 /* Slideshow */
 .slideshow {
     width: 260px;
     height: 340px;
-    margin: 30px auto;
+    margin: 35px auto;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 15px 30px rgba(0,0,0,0.5);
@@ -56,7 +61,32 @@ p {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: opacity 1.5s ease-in-out;
+}
+
+/* Letter card */
+.card {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 22px;
+    padding: 28px;
+    margin: 40px auto;
+    max-width: 560px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.45);
+    text-align: left;
+}
+
+/* Letter text */
+#letter {
+    white-space: pre-line;
+    font-size: 1.1em;
+    line-height: 1.8;
+    border-right: 2px solid #ffd6e8;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%,50%,100% { border-color: transparent; }
+    25%,75% { border-color: #ffd6e8; }
 }
 
 /* Button */
@@ -64,7 +94,7 @@ button {
     background: #ff7aa2;
     border: none;
     color: #fff;
-    padding: 14px 26px;
+    padding: 14px 28px;
     font-size: 1em;
     border-radius: 30px;
     cursor: pointer;
@@ -75,25 +105,12 @@ button:hover {
     background: #ff5f8a;
 }
 
-/* Typing letter */
-#letter {
-    font-size: 1.1em;
-    white-space: pre-line;
-    border-right: 2px solid #ffd6e8;
-    animation: blink 1s infinite;
-}
-
-@keyframes blink {
-    0%,50%,100% { border-color: transparent; }
-    25%,75% { border-color: #ffd6e8; }
-}
-
 /* Floating stars */
 .star {
     position: fixed;
     bottom: -10px;
     color: rgba(255,255,255,0.7);
-    animation: floatUp 8s linear infinite;
+    animation: floatUp 9s linear infinite;
 }
 
 @keyframes floatUp {
@@ -112,25 +129,26 @@ button:hover {
 
 <div class="container">
     <h1>Hey Hrudya 🌙</h1>
-    <p>
-        Tonight is just for calm, comfort, and love.
-    </p>
+
+    <!-- Breathing animation -->
+    <div class="breathing"></div>
+    <div class="breath-text">Breathe in… breathe out… I’m here 🤍</div>
 
     <!-- Slideshow -->
     <div class="slideshow">
         <img id="slide" src="photo1.jpg">
     </div>
 
-    <!-- Love Letter -->
+    <!-- Letter -->
     <div class="card">
         <div id="letter"></div>
     </div>
 
-    <button onclick="startExperience()">Tap to Feel My Hug 🤍</button>
+    <button onclick="startExperience()">Tap when you’re ready 🤍</button>
 </div>
 
 <script>
-// Music fade-in
+// Music fade in
 const music = document.getElementById("bgMusic");
 music.volume = 0;
 
@@ -138,7 +156,7 @@ function fadeInMusic() {
     music.play();
     let vol = 0;
     const fade = setInterval(() => {
-        if (vol < 0.5) {
+        if (vol < 0.45) {
             vol += 0.01;
             music.volume = vol;
         } else {
@@ -155,35 +173,40 @@ setInterval(() => {
     document.getElementById("slide").src = photos[index];
 }, 3500);
 
-// Typing love letter (Version 2)
-const text = `I know kabhi-kabhi demotivation aa jaata hai…
-par tujhe pata hai na, Hrudya 💫
+// Typing letter – written by you
+const text = `My Hrudya,
 
-Tum mere liye bohot special ho.
-Madam ji, aap waise hi kaafi ho —
-bas apne aap jaisi.
+I know kabhi-kabhi demotivation aa jaata hai…
+par tujhe pata hai na.
+
+You are really so special to me.
+Madam ji, aap ho hi itni khaas yaar.
 
 Aapko cheer karne ke liye
-main hoon na,
-aapka bhondu 🤍
+main hoon na —
+tera bhondu 🤍
 
-Duniya kya sochti hai, woh baad mein.
-Meri nazar mein toh
-aap hi sabse bright ho.
+You are a really, really bright person.
+Kisi aur ka toh pata nahi,
+par meri nazar mein toh
+hamesha aap hi ho.
 
-Aaj nahi, kal nahi —
-hamesha. ❤️`;
+Aaj thoda ruk jao.
+Main yahin hoon.
+
+Hamesha,
+Kaushik ❤️`;
 
 let i = 0;
 function typeLetter() {
     if (i < text.length) {
         document.getElementById("letter").innerHTML += text.charAt(i);
         i++;
-        setTimeout(typeLetter, 60);
+        setTimeout(typeLetter, 55);
     }
 }
 
-// Floating stars
+// Stars
 setInterval(() => {
     const star = document.createElement("div");
     star.className = "star";
@@ -191,10 +214,10 @@ setInterval(() => {
     star.style.left = Math.random() * 100 + "vw";
     star.style.fontSize = (12 + Math.random() * 10) + "px";
     document.body.appendChild(star);
-    setTimeout(() => star.remove(), 8000);
-}, 600);
+    setTimeout(() => star.remove(), 9000);
+}, 700);
 
-// Start everything
+// Start experience
 function startExperience() {
     fadeInMusic();
     typeLetter();
