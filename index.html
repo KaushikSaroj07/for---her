@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For You 🌙</title>
 
+<!-- Handwritten Font -->
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
 <style>
 body {
     margin: 0;
-    font-family: 'Georgia', serif;
+    font-family: 'Poppins', sans-serif;
     background: radial-gradient(circle at top, #1b1f3b, #0b0f24);
     color: #f2f2f2;
     overflow-x: hidden;
@@ -22,29 +25,6 @@ body {
 h1 {
     font-size: 2.2em;
     color: #ffd6e8;
-    font-family: 'Poppins', sans-serif;
-}
-
-/* Breathing circle */
-.breathing {
-    width: 120px;
-    height: 120px;
-    margin: 30px auto;
-    border-radius: 50%;
-    background: rgba(255, 214, 232, 0.4);
-    animation: breathe 6s ease-in-out infinite;
-}
-
-@keyframes breathe {
-    0% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale(1.35); opacity: 1; }
-    100% { transform: scale(1); opacity: 0.6; }
-}
-
-.breath-text {
-    font-size: 0.95em;
-    opacity: 0.8;
-    margin-top: 10px;
 }
 
 /* Slideshow */
@@ -68,18 +48,19 @@ h1 {
     background: rgba(255,255,255,0.08);
     backdrop-filter: blur(12px);
     border-radius: 22px;
-    padding: 28px;
+    padding: 30px;
     margin: 40px auto;
     max-width: 560px;
     box-shadow: 0 25px 50px rgba(0,0,0,0.45);
     text-align: left;
 }
 
-/* Letter text */
+/* Handwritten letter text */
 #letter {
+    font-family: 'Dancing Script', cursive;
     white-space: pre-line;
-    font-size: 1.1em;
-    line-height: 1.8;
+    font-size: 1.35em;
+    line-height: 1.9;
     border-right: 2px solid #ffd6e8;
     animation: blink 1s infinite;
 }
@@ -130,10 +111,6 @@ button:hover {
 <div class="container">
     <h1>Hey Hrudya 🌙</h1>
 
-    <!-- Breathing animation -->
-    <div class="breathing"></div>
-    <div class="breath-text">Breathe in… breathe out… I’m here 🤍</div>
-
     <!-- Slideshow -->
     <div class="slideshow">
         <img id="slide" src="photo1.jpg">
@@ -173,7 +150,7 @@ setInterval(() => {
     document.getElementById("slide").src = photos[index];
 }, 3500);
 
-// Typing letter – written by you
+// Typing handwritten letter (from Kaushik)
 const text = `My Hrudya,
 
 I know kabhi-kabhi demotivation aa jaata hai…
@@ -184,7 +161,7 @@ Madam ji, aap ho hi itni khaas yaar.
 
 Aapko cheer karne ke liye
 main hoon na —
-tera bhondu 🤍
+mera bhondu 🤍
 
 You are a really, really bright person.
 Kisi aur ka toh pata nahi,
@@ -192,7 +169,7 @@ par meri nazar mein toh
 hamesha aap hi ho.
 
 Aaj thoda ruk jao.
-Main yahin hoon.
+Bas yahin rehna.
 
 Hamesha,
 Kaushik ❤️`;
@@ -202,7 +179,7 @@ function typeLetter() {
     if (i < text.length) {
         document.getElementById("letter").innerHTML += text.charAt(i);
         i++;
-        setTimeout(typeLetter, 55);
+        setTimeout(typeLetter, 60);
     }
 }
 
