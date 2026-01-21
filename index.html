@@ -12,19 +12,20 @@
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    background: radial-gradient(circle at top, #1b1f3b, #0b0f24);
-    color: #f2f2f2;
+    background: radial-gradient(circle at top, #2b1055, #120024);
+    color: #f5eaff;
     overflow-x: hidden;
 }
 
 .container {
     text-align: center;
-    padding: 40px 20px 80px;
+    padding: 40px 20px 90px;
 }
 
 h1 {
-    font-size: 2.2em;
-    color: #ffd6e8;
+    font-size: 2.3em;
+    color: #ffb7d5;
+    text-shadow: 0 0 15px rgba(255,183,213,0.4);
 }
 
 /* Slideshow */
@@ -32,9 +33,9 @@ h1 {
     width: 260px;
     height: 340px;
     margin: 35px auto;
-    border-radius: 20px;
+    border-radius: 22px;
     overflow: hidden;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
 }
 
 .slideshow img {
@@ -45,48 +46,51 @@ h1 {
 
 /* Letter card */
 .card {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(12px);
-    border-radius: 22px;
-    padding: 30px;
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(14px);
+    border-radius: 24px;
+    padding: 32px;
     margin: 40px auto;
-    max-width: 560px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.45);
+    max-width: 580px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.55);
     text-align: left;
 }
 
-/* Handwritten letter text */
+/* Handwritten text */
 #letter {
     font-family: 'Dancing Script', cursive;
     white-space: pre-line;
-    font-size: 1.35em;
+    font-size: 1.45em;
     line-height: 1.9;
-    border-right: 2px solid #ffd6e8;
+    border-right: 2px solid #ffb7d5;
     animation: blink 1s infinite;
 }
 
 @keyframes blink {
     0%,50%,100% { border-color: transparent; }
-    25%,75% { border-color: #ffd6e8; }
+    25%,75% { border-color: #ffb7d5; }
 }
 
-/* Button */
+/* Buttons */
 button {
-    background: #ff7aa2;
+    background: linear-gradient(135deg, #ff7aa2, #ff4f9a);
     border: none;
     color: #fff;
     padding: 14px 28px;
     font-size: 1em;
     border-radius: 30px;
     cursor: pointer;
+    margin: 10px;
+    box-shadow: 0 10px 25px rgba(255,79,154,0.35);
     transition: 0.3s;
 }
 
 button:hover {
-    background: #ff5f8a;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(255,79,154,0.5);
 }
 
-/* Floating stars */
+/* Floating sparkles */
 .star {
     position: fixed;
     bottom: -10px;
@@ -121,7 +125,8 @@ button:hover {
         <div id="letter"></div>
     </div>
 
-    <button onclick="startExperience()">Tap when you’re ready 🤍</button>
+    <button onclick="startFirst()">Read My Heart 🤍</button>
+    <button onclick="startSecond()">Read My Drama 😄</button>
 </div>
 
 <script>
@@ -150,8 +155,8 @@ setInterval(() => {
     document.getElementById("slide").src = photos[index];
 }, 3500);
 
-// Typing handwritten letter (from Kaushik)
-const text = `My Hrudya,
+// Letters
+const letter1 = `My Hrudya,
 
 I know kabhi-kabhi demotivation aa jaata hai…
 par tujhe pata hai na.
@@ -168,22 +173,53 @@ Kisi aur ka toh pata nahi,
 par meri nazar mein toh
 hamesha aap hi ho.
 
-Aaj thoda ruk jao.
-Bas yahin rehna.
-
 Hamesha,
 Kaushik ❤️`;
 
+const letter2 = `Kasi aais re meri chipkali 🦎
+
+Kyun udas udas baithi hai?
+Arey zara aaina dekho yaar,
+itni acchi shakal pe
+udasi acchi nahi lagti 😌
+
+You can cry,
+but jab main hoon na saath,
+toh you have my shoulder 🤍
+
+Abhi batao meri sherni 🦁
+kya khayegi?
+Main order karu ya
+khud banaun? 😄`;
+
 let i = 0;
+let currentText = "";
+
 function typeLetter() {
-    if (i < text.length) {
-        document.getElementById("letter").innerHTML += text.charAt(i);
+    if (i < currentText.length) {
+        document.getElementById("letter").innerHTML += currentText.charAt(i);
         i++;
-        setTimeout(typeLetter, 60);
+        setTimeout(typeLetter, 55);
     }
 }
 
-// Stars
+function startFirst() {
+    document.getElementById("letter").innerHTML = "";
+    i = 0;
+    currentText = letter1;
+    fadeInMusic();
+    typeLetter();
+}
+
+function startSecond() {
+    document.getElementById("letter").innerHTML = "";
+    i = 0;
+    currentText = letter2;
+    fadeInMusic();
+    typeLetter();
+}
+
+// Sparkles
 setInterval(() => {
     const star = document.createElement("div");
     star.className = "star";
@@ -193,12 +229,6 @@ setInterval(() => {
     document.body.appendChild(star);
     setTimeout(() => star.remove(), 9000);
 }, 700);
-
-// Start experience
-function startExperience() {
-    fadeInMusic();
-    typeLetter();
-}
 </script>
 
 </body>
