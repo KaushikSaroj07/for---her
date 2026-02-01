@@ -5,227 +5,176 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Morning Surprise ☀️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400&display=swap" rel="stylesheet">
 
 <style>
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #ffecd2, #fcb69f, #ff8fb1);
-    overflow-x: hidden;
+body{
+  margin:0;
+  font-family:Poppins;
+  background:linear-gradient(180deg,#ffd6a5,#ffb7b2,#ff8fb1);
+  overflow-x:hidden;
+  text-align:center;
 }
 
-.container {
-    text-align: center;
-    padding: 40px 16px 90px;
+/* sunrise glow */
+.sun {
+  width:140px;
+  height:140px;
+  margin:25px auto 10px;
+  border-radius:50%;
+  background:radial-gradient(circle,#fff3b0,#ffb347);
+  box-shadow:0 0 60px rgba(255,180,70,.6);
+  animation:rise 4s ease-in-out infinite alternate;
 }
 
-/* Main wish text */
-.wish {
-    font-family: 'Dancing Script', cursive;
-    font-size: 2.8em;
-    color: #a0144f;
-    text-shadow: 0 6px 25px rgba(160,20,79,0.25);
-    margin-bottom: 10px;
+@keyframes rise {
+  from { transform:translateY(0); }
+  to { transform:translateY(-12px); }
 }
 
-.sub {
-    color: #7a2e4a;
-    font-size: 1em;
-    opacity: 0.8;
+.wish{
+  font-family:'Dancing Script',cursive;
+  font-size:2.8em;
+  color:#a0144f;
+  margin:10px 0 5px;
+  text-shadow:0 6px 20px rgba(160,20,79,.25);
 }
 
-/* Photo layout — premium */
-.photo-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    max-width: 540px;
-    margin: 30px auto;
+.sub{
+  color:#6a2a45;
+  opacity:.8;
+  margin-bottom:20px;
 }
 
-.photo-grid img {
-    width: 100%;
-    height: 230px;
-    object-fit: cover;
-    border-radius: 20px;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.18);
-    transition: 0.35s;
+/* photo grid */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  max-width:540px;
+  margin:20px auto;
 }
 
-.photo-grid img:hover {
-    transform: scale(1.05);
+.grid img{
+  width:100%;
+  height:230px;
+  object-fit:cover;
+  border-radius:20px;
+  box-shadow:0 14px 28px rgba(0,0,0,.18);
+  transition:.35s;
 }
 
-/* Play button */
-button {
-    background: linear-gradient(135deg, #ff6f91, #ff9671);
-    border: none;
-    color: white;
-    padding: 16px 30px;
-    font-size: 1.05em;
-    border-radius: 32px;
-    cursor: pointer;
-    box-shadow: 0 14px 30px rgba(0,0,0,0.2);
-    transition: 0.3s;
+.grid img:hover{
+  transform:scale(1.05);
 }
 
-button:hover {
-    transform: translateY(-2px);
+/* button */
+button{
+  background:linear-gradient(135deg,#ff6f91,#ff9671);
+  border:none;
+  padding:16px 30px;
+  border-radius:32px;
+  color:white;
+  font-size:1.05em;
+  margin-top:18px;
+  box-shadow:0 14px 30px rgba(0,0,0,.2);
 }
 
-/* Floating hearts */
-.heart {
-    position: fixed;
-    bottom: -10px;
-    animation: floatUp 8s linear infinite;
-    color: rgba(255,90,130,0.75);
+/* popup */
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  display:none;
+  align-items:center;
+  justify-content:center;
 }
 
-@keyframes floatUp {
-    from { transform: translateY(0); opacity: 1; }
-    to { transform: translateY(-110vh); opacity: 0; }
+.popup-box{
+  background:white;
+  padding:28px;
+  border-radius:20px;
+  max-width:300px;
+  font-family:'Dancing Script',cursive;
+  font-size:1.6em;
+}
+
+/* floating hearts */
+.heart{
+  position:fixed;
+  bottom:-10px;
+  animation:floatUp 8s linear infinite;
+  color:rgba(255,90,130,.75);
+}
+
+@keyframes floatUp{
+  from{transform:translateY(0);opacity:1;}
+  to{transform:translateY(-110vh);opacity:0;}
 }
 </style>
 </head>
 
 <body>
 
+<div class="sun"></div>
+
+<div class="wish">Good morning Golu molu ☀️</div>
+<div class="sub">Smile first. World later 🤍</div>
+
+<div class="grid">
+  <img src="photo1.jpg">
+  <img src="photo2.jpg">
+  <img src="photo3.jpg">
+  <img src="photo4.jpg">
+</div>
+
+<button onclick="startAll()">Tap for Morning Vibes 🎵</button>
+
 <audio id="bgMusic" loop>
-    <source src="lovesong1.mp3" type="audio/mpeg">
+  <source src="lovesong1.mp3" type="audio/mpeg">
 </audio>
 
-<div class="container">
-
-    <div class="wish">Good morning Golu molu ☀️</div>
-    <div class="sub">Smile first. World later 🤍</div>
-
-    <!-- Keep all 4 photos -->
-    <div class="photo-grid">
-        <img src="photo1.jpg">
-        <img src="photo2.jpg">
-        <img src="photo3.jpg">
-        <img src="photo4.jpg">
-    </div>
-
-    <button onclick="startMusic()">Tap for Morning Vibes 🎵</button>
-
+<!-- popup -->
+<div class="popup" id="popup">
+  <div class="popup-box">
+    Utho meri sleepy queen 👑<br>
+    Breakfast miss mat karna 😄
+  </div>
 </div>
 
 <script>
-// music fade in
-const music = document.getElementById("bgMusic");
-music.volume = 0;
+function startAll(){
+  startMusic();
+  showPopup();
+}
 
 function startMusic(){
-    music.play();
-    let v = 0;
-    const f = setInterval(()=>{
-        if(v < 0.5){
-            v += 0.01;
-            music.volume = v;
-        } else clearInterval(f);
-    },200);
+  const m=document.getElementById("bgMusic");
+  m.volume=0;
+  m.play();
+  let v=0;
+  const f=setInterval(()=>{
+    if(v<0.5){v+=0.01;m.volume=v;}
+    else clearInterval(f);
+  },200);
 }
 
-// floating hearts
+function showPopup(){
+  const p=document.getElementById("popup");
+  p.style.display="flex";
+  setTimeout(()=>p.style.display="none",4000);
+}
+
+/* floating hearts */
 setInterval(()=>{
-    const h = document.createElement("div");
-    h.className="heart";
-    h.innerHTML="❤";
-    h.style.left = Math.random()*100+"vw";
-    h.style.fontSize = (14+Math.random()*18)+"px";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),8000);
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(14+Math.random()*18)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),8000);
 },500);
-</script>
-
-</body>
-</html>    }, 200);
-}
-
-// Slideshow
-const photos = ["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg"];
-let index = 0;
-setInterval(() => {
-    index = (index + 1) % photos.length;
-    document.getElementById("slide").src = photos[index];
-}, 3500);
-
-// Letters
-const letter1 = `My Hrudya,
-
-I know kabhi-kabhi demotivation aa jaata hai…
-par tujhe pata hai na.
-
-You are really so special to me.
-Madam ji, aap ho hi itni khaas yaar.
-
-Aapko cheer karne ke liye
-main hoon na —
-mera bhondu 🤍
-
-You are a really, really bright person.
-Kisi aur ka toh pata nahi,
-par meri nazar mein toh
-hamesha aap hi ho.
-
-Hamesha,
-Kaushik ❤️`;
-
-const letter2 = `Kasi aais re meri chipkali 🦎
-
-Kyun udas udas baithi hai?
-Arey zara aaina dekho yaar,
-itni acchi shakal pe
-udasi acchi nahi lagti 😌
-
-You can cry,
-but jab main hoon na saath,
-toh you have my shoulder 🤍
-
-Abhi batao meri sherni 🦁
-kya khayegi?
-Main order karu ya
-khud banaun? 😄`;
-
-let i = 0;
-let currentText = "";
-
-function typeLetter() {
-    if (i < currentText.length) {
-        document.getElementById("letter").innerHTML += currentText.charAt(i);
-        i++;
-        setTimeout(typeLetter, 55);
-    }
-}
-
-function startFirst() {
-    document.getElementById("letter").innerHTML = "";
-    i = 0;
-    currentText = letter1;
-    fadeInMusic();
-    typeLetter();
-}
-
-function startSecond() {
-    document.getElementById("letter").innerHTML = "";
-    i = 0;
-    currentText = letter2;
-    fadeInMusic();
-    typeLetter();
-}
-
-// Sparkles
-setInterval(() => {
-    const star = document.createElement("div");
-    star.className = "star";
-    star.innerHTML = "✨";
-    star.style.left = Math.random() * 100 + "vw";
-    star.style.fontSize = (12 + Math.random() * 10) + "px";
-    document.body.appendChild(star);
-    setTimeout(() => star.remove(), 9000);
-}, 700);
 </script>
 
 </body>
