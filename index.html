@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Morning Surprise ☀️</title>
+<title>Rose Day Surprise 🌹</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400&display=swap" rel="stylesheet">
 
@@ -11,19 +11,19 @@
 body{
   margin:0;
   font-family:Poppins;
-  background:linear-gradient(180deg,#ffd6a5,#ffb7b2,#ff8fb1);
+  background:linear-gradient(180deg,#ffccd5,#ff8fa3,#ff4d6d);
   overflow-x:hidden;
   text-align:center;
 }
 
-/* sunrise glow */
+/* glow circle */
 .sun {
   width:140px;
   height:140px;
   margin:25px auto 10px;
   border-radius:50%;
-  background:radial-gradient(circle,#fff3b0,#ffb347);
-  box-shadow:0 0 60px rgba(255,180,70,.6);
+  background:radial-gradient(circle,#ffe5ec,#ff758f);
+  box-shadow:0 0 70px rgba(255,80,120,.6);
   animation:rise 4s ease-in-out infinite alternate;
 }
 
@@ -34,50 +34,65 @@ body{
 
 .wish{
   font-family:'Dancing Script',cursive;
-  font-size:2.8em;
-  color:#a0144f;
+  font-size:2.9em;
+  color:#8b0033;
   margin:10px 0 5px;
-  text-shadow:0 6px 20px rgba(160,20,79,.25);
 }
 
 .sub{
-  color:#6a2a45;
-  opacity:.8;
+  color:#5c1a2f;
+  opacity:.9;
   margin-bottom:20px;
 }
 
-/* photo grid */
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-  max-width:540px;
+/* main photo reveal box */
+.reveal-box{
+  width:320px;
+  height:360px;
   margin:20px auto;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 18px 35px rgba(0,0,0,.25);
+  background:#fff0f3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.grid img{
+.reveal-box img{
   width:100%;
-  height:230px;
+  height:100%;
   object-fit:cover;
-  border-radius:20px;
-  box-shadow:0 14px 28px rgba(0,0,0,.18);
-  transition:.35s;
+  display:none;
 }
 
-.grid img:hover{
-  transform:scale(1.05);
-}
-
-/* button */
-button{
-  background:linear-gradient(135deg,#ff6f91,#ff9671);
+/* main button */
+button.main-btn{
+  background:linear-gradient(135deg,#c9184a,#ff4d6d);
   border:none;
-  padding:16px 30px;
+  padding:16px 26px;
   border-radius:32px;
   color:white;
   font-size:1.05em;
   margin-top:18px;
-  box-shadow:0 14px 30px rgba(0,0,0,.2);
+  box-shadow:0 14px 30px rgba(0,0,0,.25);
+}
+
+/* sunflower popup button */
+.sunflower-btn{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  font-size:42px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  animation:bounce 2s infinite;
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
 }
 
 /* popup */
@@ -94,22 +109,23 @@ button{
   background:white;
   padding:28px;
   border-radius:20px;
-  max-width:300px;
+  max-width:320px;
   font-family:'Dancing Script',cursive;
   font-size:1.6em;
 }
 
-/* floating hearts */
-.heart{
+/* floating lilies */
+.lily{
   position:fixed;
   bottom:-10px;
-  animation:floatUp 8s linear infinite;
-  color:rgba(255,90,130,.75);
+  animation:floatUp linear forwards;
 }
 
 @keyframes floatUp{
-  from{transform:translateY(0);opacity:1;}
-  to{transform:translateY(-110vh);opacity:0;}
+  to{
+    transform:translateY(-110vh) rotate(360deg);
+    opacity:0;
+  }
 }
 </style>
 </head>
@@ -118,34 +134,60 @@ button{
 
 <div class="sun"></div>
 
-<div class="wish">Good morning Golu molu ☀️</div>
-<div class="sub">Smile first. World later 🤍</div>
+<div class="wish">Happy Rose Day Golu molu 🌹</div>
+<div class="sub">Something more beautiful than any flower…</div>
 
-<div class="grid">
-  <img src="photo1.jpg">
-  <img src="photo2.jpg">
-  <img src="photo3.jpg">
-  <img src="photo4.jpg">
+<!-- reveal photo area -->
+<div class="reveal-box">
+  <img id="p0" src="photo1.jpg">
+  <img id="p1" src="photo2.jpg">
+  <img id="p2" src="photo3.jpg">
+  <img id="p3" src="photo4.jpg">
 </div>
 
-<button onclick="startAll()">Tap for Morning Vibes 🎵</button>
+<button class="main-btn" onclick="startReveal()">
+  Wanna see something more beautiful than any flower? 🌹
+</button>
 
 <audio id="bgMusic" loop>
   <source src="ChaarKadam.mp3" type="audio/mpeg">
 </audio>
 
+<!-- sunflower popup button -->
+<button class="sunflower-btn" onclick="showPopup()">🌻</button>
+
 <!-- popup -->
 <div class="popup" id="popup">
   <div class="popup-box">
-    Utho meri sleepy queen 👑<br>
-    Breakfast miss mat karna 😄
+    A rose is nice…<br>
+    But YOU are better 🌹❤️
   </div>
 </div>
 
 <script>
-function startAll(){
+const photos = [
+  document.getElementById("p0"),
+  document.getElementById("p1"),
+  document.getElementById("p2"),
+  document.getElementById("p3")
+];
+
+function startReveal(){
   startMusic();
-  showPopup();
+  let i = 0;
+
+  photos.forEach(p => p.style.display="none");
+
+  const interval = setInterval(()=>{
+    if(i>0) photos[i-1].style.display="none";
+    photos[i].style.display="block";
+    i++;
+
+    if(i === photos.length){
+      clearInterval(interval);
+      // last photo stays permanently
+    }
+  },2000);
 }
 
 function startMusic(){
@@ -165,15 +207,16 @@ function showPopup(){
   setTimeout(()=>p.style.display="none",4000);
 }
 
-/* floating hearts */
+/* floating lily flowers */
 setInterval(()=>{
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="❤";
-  h.style.left=Math.random()*100+"vw";
-  h.style.fontSize=(14+Math.random()*18)+"px";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),8000);
+  const f=document.createElement("div");
+  f.className="lily";
+  f.innerHTML="🌼";
+  f.style.left=Math.random()*100+"vw";
+  f.style.fontSize=(18+Math.random()*22)+"px";
+  f.style.animationDuration=(7+Math.random()*4)+"s";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),11000);
 },500);
 </script>
 
