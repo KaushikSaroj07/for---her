@@ -3,60 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rose Day Surprise 🌹</title>
+<title>Rose Day Surprise 🌻</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 
 <style>
 body{
   margin:0;
   font-family:Poppins;
   background:linear-gradient(180deg,#ffccd5,#ff8fa3,#ff4d6d);
-  overflow-x:hidden;
+  overflow:hidden;
   text-align:center;
 }
 
-/* glow circle */
-.sun {
-  width:140px;
-  height:140px;
-  margin:25px auto 10px;
-  border-radius:50%;
-  background:radial-gradient(circle,#ffe5ec,#ff758f);
-  box-shadow:0 0 70px rgba(255,80,120,.6);
-  animation:rise 4s ease-in-out infinite alternate;
-}
-
-@keyframes rise {
-  from { transform:translateY(0); }
-  to { transform:translateY(-12px); }
-}
-
-.wish{
-  font-family:'Dancing Script',cursive;
-  font-size:2.9em;
-  color:#8b0033;
-  margin:10px 0 5px;
-}
-
-.sub{
-  color:#5c1a2f;
-  opacity:.9;
-  margin-bottom:20px;
-}
-
-/* main photo reveal box */
+/* hidden photo reveal box */
 .reveal-box{
   width:320px;
   height:360px;
-  margin:20px auto;
+  margin:60px auto;
   border-radius:22px;
   overflow:hidden;
   box-shadow:0 18px 35px rgba(0,0,0,.25);
-  background:#fff0f3;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display:none;
 }
 
 .reveal-box img{
@@ -66,24 +34,14 @@ body{
   display:none;
 }
 
-/* main button */
-button.main-btn{
-  background:linear-gradient(135deg,#c9184a,#ff4d6d);
-  border:none;
-  padding:16px 26px;
-  border-radius:32px;
-  color:white;
-  font-size:1.05em;
-  margin-top:18px;
-  box-shadow:0 14px 30px rgba(0,0,0,.25);
-}
-
-/* sunflower popup button */
-.sunflower-btn{
+/* sunflower start button */
+.sunflower-start{
   position:fixed;
-  right:18px;
-  bottom:18px;
-  font-size:42px;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:64px;
   background:none;
   border:none;
   cursor:pointer;
@@ -92,7 +50,7 @@ button.main-btn{
 
 @keyframes bounce{
   0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-8px);}
+  50%{transform:translateY(-10px);}
 }
 
 /* popup */
@@ -107,11 +65,39 @@ button.main-btn{
 
 .popup-box{
   background:white;
-  padding:28px;
-  border-radius:20px;
+  padding:26px;
+  border-radius:18px;
   max-width:320px;
-  font-family:'Dancing Script',cursive;
-  font-size:1.6em;
+}
+
+.popup-msg{
+  font-size:1.2em;
+  margin-bottom:18px;
+}
+
+.btn-row{
+  display:flex;
+  gap:16px;
+  justify-content:center;
+}
+
+.yes-btn{
+  background:#c9184a;
+  color:white;
+  border:none;
+  padding:12px 22px;
+  border-radius:26px;
+  font-size:1em;
+}
+
+.no-btn{
+  background:#adb5bd;
+  color:white;
+  border:none;
+  padding:12px 22px;
+  border-radius:26px;
+  font-size:1em;
+  transition:.2s;
 }
 
 /* floating lilies */
@@ -132,37 +118,33 @@ button.main-btn{
 
 <body>
 
-<div class="sun"></div>
+<!-- sunflower popup trigger -->
+<button class="sunflower-start" id="startBtn" onclick="openChoice()">🌻</button>
 
-<div class="wish">Happy Rose Day Golu molu 🌹</div>
-<div class="sub">Something more beautiful than any flower…</div>
+<!-- popup with message and buttons -->
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <div class="popup-msg">
+      wanna see something more beautiful than flowers
+    </div>
+    <div class="btn-row">
+      <button class="yes-btn" onclick="startReveal()">Yes</button>
+      <button class="no-btn" id="noBtn" onclick="shrinkNo()">No</button>
+    </div>
+  </div>
+</div>
 
-<!-- reveal photo area -->
-<div class="reveal-box">
+<!-- photo reveal -->
+<div class="reveal-box" id="revealBox">
   <img id="p0" src="photo1.jpg">
   <img id="p1" src="photo2.jpg">
   <img id="p2" src="photo3.jpg">
   <img id="p3" src="photo4.jpg">
 </div>
 
-<button class="main-btn" onclick="startReveal()">
-  Wanna see something more beautiful than any flower? 🌹
-</button>
-
 <audio id="bgMusic" loop>
   <source src="ChaarKadam.mp3" type="audio/mpeg">
 </audio>
-
-<!-- sunflower popup button -->
-<button class="sunflower-btn" onclick="showPopup()">🌻</button>
-
-<!-- popup -->
-<div class="popup" id="popup">
-  <div class="popup-box">
-    A rose is nice…<br>
-    But YOU are better 🌹❤️
-  </div>
-</div>
 
 <script>
 const photos = [
@@ -172,20 +154,40 @@ const photos = [
   document.getElementById("p3")
 ];
 
-function startReveal(){
-  startMusic();
-  let i = 0;
+let noScale = 1;
 
+/* open popup from sunflower */
+function openChoice(){
+  document.getElementById("startBtn").style.display="none";
+  document.getElementById("popup").style.display="flex";
+}
+
+/* shrink NO button each click */
+function shrinkNo(){
+  const n=document.getElementById("noBtn");
+  noScale *= 0.7;
+  n.style.transform = "scale("+noScale+")";
+  if(noScale < 0.2){
+    n.style.opacity = 0;
+    n.style.pointerEvents = "none";
+  }
+}
+
+/* start reveal after YES */
+function startReveal(){
+  document.getElementById("popup").style.display="none";
+  document.getElementById("revealBox").style.display="block";
+  startMusic();
+
+  let i = 0;
   photos.forEach(p => p.style.display="none");
 
   const interval = setInterval(()=>{
     if(i>0) photos[i-1].style.display="none";
     photos[i].style.display="block";
     i++;
-
     if(i === photos.length){
       clearInterval(interval);
-      // last photo stays permanently
     }
   },2000);
 }
@@ -199,12 +201,6 @@ function startMusic(){
     if(v<0.5){v+=0.01;m.volume=v;}
     else clearInterval(f);
   },200);
-}
-
-function showPopup(){
-  const p=document.getElementById("popup");
-  p.style.display="flex";
-  setTimeout(()=>p.style.display="none",4000);
 }
 
 /* floating lily flowers */
