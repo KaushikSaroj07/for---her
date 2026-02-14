@@ -23,24 +23,47 @@ body{
   100%{background-position:0% 50%;}
 }
 
-/* teddy start */
+/* teddy */
 .teddy-start{
   position:fixed;
   inset:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:72px;
+  font-size:76px;
   background:none;
   border:none;
   cursor:pointer;
-  animation:bounce 1.6s infinite;
+  animation:idleBounce 1.8s infinite;
+  transition:.2s;
 }
 
-@keyframes bounce{
-  0%{transform:translateY(0);}
-  50%{transform:translateY(-16px);}
-  100%{transform:translateY(0);}
+@keyframes idleBounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-14px);}
+}
+
+/* teddy reactions */
+.nod{
+  animation:nodAnim .9s ease-in-out 2;
+}
+@keyframes nodAnim{
+  0%{transform:rotate(0);}
+  25%{transform:rotate(18deg);}
+  50%{transform:rotate(0);}
+  75%{transform:rotate(18deg);}
+  100%{transform:rotate(0);}
+}
+
+.shake{
+  animation:shakeAnim .6s ease-in-out 2;
+}
+@keyframes shakeAnim{
+  0%{transform:rotate(0);}
+  25%{transform:rotate(-18deg);}
+  50%{transform:rotate(18deg);}
+  75%{transform:rotate(-18deg);}
+  100%{transform:rotate(0);}
 }
 
 /* popup */
@@ -98,27 +121,41 @@ body{
   bottom:18px;
 }
 
-/* FULL SCREEN PHOTO VIEW */
+/* FULLSCREEN SLIDE VIEW */
 .reveal-box{
   position:fixed;
   inset:0;
   display:none;
   background:black;
+  overflow:hidden;
 }
 
-.reveal-box img{
+.slide{
   position:absolute;
   inset:0;
   width:100%;
   height:100%;
   object-fit:cover;
+  transform:translateX(100%);
   opacity:0;
-  transition:opacity .8s, transform .8s;
 }
 
-.reveal-box img.show{
-  opacity:1;
-  transform:scale(1.04);
+.slide.active{
+  animation:slideIn 1.1s cubic-bezier(.22,.8,.25,1) forwards;
+}
+
+.slide.out{
+  animation:slideOut 1.1s cubic-bezier(.22,.8,.25,1) forwards;
+}
+
+@keyframes slideIn{
+  from{transform:translateX(100%); opacity:.6;}
+  to{transform:translateX(0); opacity:1;}
+}
+
+@keyframes slideOut{
+  from{transform:translateX(0); opacity:1;}
+  to{transform:translateX(-12%); opacity:0;}
 }
 
 /* final message */
@@ -147,24 +184,22 @@ body{
 
 <body>
 
-<!-- ONLY TEDDY (no heart beside it) -->
-<button class="teddy-start" id="startBtn" onclick="openChoice()">🧸</button>
+<button class="teddy-start" id="teddy" onclick="openChoice()">🧸</button>
 
 <div class="popup" id="popup">
   <div class="popup-box" id="popupBox">
     <div class="popup-emoji">🧸</div>
     <div class="popup-msg">Hrudya say yes or no</div>
-    <button class="yes-btn" onclick="startReveal()">Yes</button>
+    <button class="yes-btn" onclick="yesAction()">Yes</button>
     <button class="no-btn" id="noBtn">No</button>
   </div>
 </div>
 
-<!-- FULLSCREEN IMAGES -->
 <div class="reveal-box" id="revealBox">
-  <img id="p0" src="photo1.jpg">
-  <img id="p1" src="photo2.jpg">
-  <img id="p2" src="photo3.jpg">
-  <img id="p3" src="photo4.jpg">
+  <img class="slide" src="photo1.jpg">
+  <img class="slide" src="photo2.jpg">
+  <img class="slide" src="photo3.jpg">
+  <img class="slide" src="photo4.jpg">
 </div>
 
 <div class="final-card" id="finalCard">
@@ -179,23 +214,25 @@ body{
 </audio>
 
 <script>
-const photos=[
-  document.getElementById("p0"),
-  document.getElementById("p1"),
-  document.getElementById("p2"),
-  document.getElementById("p3")
-];
-
-function openChoice(){
-  document.getElementById("startBtn").style.display="none";
-  document.getElementById("popup").style.display="flex";
-}
-
-/* running NO button */
+const teddy=document.getElementById("teddy");
+const slides=[...document.querySelectorAll(".slide")];
 const noBtn=document.getElementById("noBtn");
 const box=document.getElementById("popupBox");
 
+/* open popup */
+function openChoice(){
+  teddy.style.display="none";
+  document.getElementById("popup").style.display="flex";
+}
+
+/* NO button run + teddy sad shake */
 function moveNo(){
+  teddy.style.display="flex";
+  teddy.innerHTML="🥺";
+  teddy.classList.remove("nod");
+  teddy.classList.add("shake");
+  setTimeout(()=>teddy.classList.remove("shake"),700);
+
   const bw=box.clientWidth-100;
   const bh=box.clientHeight-80;
   noBtn.style.left=Math.random()*bw+"px";
@@ -207,27 +244,39 @@ function moveNo(){
 noBtn.addEventListener("mouseover",moveNo);
 noBtn.addEventListener("touchstart",moveNo);
 
-/* reveal sequence only after YES */
+/* YES → teddy nod + smooth slides */
+function yesAction(){
+  teddy.style.display="flex";
+  teddy.innerHTML="🧸";
+  teddy.classList.add("nod");
+  setTimeout(startReveal,900);
+}
+
+/* smooth slideshow */
 function startReveal(){
   document.getElementById("popup").style.display="none";
-  const rb=document.getElementById("revealBox");
-  rb.style.display="block";
+  document.getElementById("revealBox").style.display="block";
   startMusic();
 
   let i=0;
+  slides[i].classList.add("active");
+
   const interval=setInterval(()=>{
-    photos.forEach(p=>p.classList.remove("show"));
-    photos[i].classList.add("show");
+    slides[i].classList.remove("active");
+    slides[i].classList.add("out");
     i++;
-    if(i===photos.length){
+    if(i>=slides.length){
       clearInterval(interval);
       setTimeout(()=>{
         document.getElementById("finalCard").style.display="flex";
-      },1800);
+      },1200);
+      return;
     }
+    slides[i].classList.add("active");
   },2000);
 }
 
+/* music fade */
 function startMusic(){
   const m=document.getElementById("bgMusic");
   m.volume=0;
