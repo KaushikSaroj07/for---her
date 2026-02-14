@@ -10,13 +10,84 @@
 <style>
 body{
   margin:0;
-  font-family:Poppins;
+  font-family:Poppins, sans-serif;
   background:linear-gradient(180deg,#ffd1dc,#ff8fab,#ff4d6d);
   overflow:hidden;
   text-align:center;
 }
 
-/* hidden photo reveal box */
+/* animated teddy start */
+.teddy-start{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:64px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  animation:teddyBounce 1.6s infinite;
+}
+
+@keyframes teddyBounce{
+  0%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-14px) scale(1.1);}
+  100%{transform:translateY(0) scale(1);}
+}
+
+/* popup */
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.popup-box{
+  background:white;
+  padding:24px;
+  border-radius:20px;
+  max-width:340px;
+  width:100%;
+  box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.popup-msg{
+  font-size:1.2em;
+  margin-bottom:20px;
+}
+
+.btn-row{
+  display:flex;
+  gap:16px;
+  justify-content:center;
+}
+
+.yes-btn{
+  background:#e03131;
+  color:white;
+  border:none;
+  padding:12px 24px;
+  border-radius:26px;
+  font-size:1em;
+  box-shadow:0 8px 18px rgba(0,0,0,.2);
+}
+
+.no-btn{
+  background:#adb5bd;
+  color:white;
+  border:none;
+  padding:12px 24px;
+  border-radius:26px;
+  font-size:1em;
+  transition:.2s;
+}
+
+/* photo reveal */
 .reveal-box{
   width:320px;
   height:360px;
@@ -33,75 +104,6 @@ body{
   height:100%;
   object-fit:cover;
   display:none;
-}
-
-/* heart start button */
-.heart-start{
-  position:fixed;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:64px;
-  background:none;
-  border:none;
-  cursor:pointer;
-  animation:pulse 1.6s infinite;
-}
-
-@keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.15);}
-  100%{transform:scale(1);}
-}
-
-/* popup */
-.popup{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.35);
-  display:none;
-  align-items:center;
-  justify-content:center;
-}
-
-.popup-box{
-  background:white;
-  padding:26px;
-  border-radius:18px;
-  max-width:320px;
-  box-shadow:0 10px 30px rgba(0,0,0,.25);
-}
-
-.popup-msg{
-  font-size:1.2em;
-  margin-bottom:18px;
-}
-
-.btn-row{
-  display:flex;
-  gap:16px;
-  justify-content:center;
-}
-
-.yes-btn{
-  background:#e03131;
-  color:white;
-  border:none;
-  padding:12px 22px;
-  border-radius:26px;
-  font-size:1em;
-  box-shadow:0 8px 18px rgba(0,0,0,.2);
-}
-
-.no-btn{
-  background:#adb5bd;
-  color:white;
-  border:none;
-  padding:12px 22px;
-  border-radius:26px;
-  font-size:1em;
-  transition:.2s;
 }
 
 /* floating hearts */
@@ -122,10 +124,10 @@ body{
 
 <body>
 
-<!-- heart popup trigger -->
-<button class="heart-start" id="startBtn" onclick="openChoice()">❤️</button>
+<!-- TEDDY START BUTTON -->
+<button class="teddy-start" id="startBtn" onclick="openChoice()">🧸</button>
 
-<!-- popup with exact message -->
+<!-- POPUP -->
 <div class="popup" id="popup">
   <div class="popup-box">
     <div class="popup-msg">
@@ -138,7 +140,7 @@ body{
   </div>
 </div>
 
-<!-- photo reveal -->
+<!-- PHOTO REVEAL -->
 <div class="reveal-box" id="revealBox">
   <img id="p0" src="photo1.jpg">
   <img id="p1" src="photo2.jpg">
@@ -166,18 +168,18 @@ function openChoice(){
   document.getElementById("popup").style.display="flex";
 }
 
-/* shrinking NO button trap */
+/* shrinking NO button */
 function shrinkNo(){
   const n=document.getElementById("noBtn");
   noScale *= 0.7;
   n.style.transform = "scale("+noScale+")";
-  if(noScale < 0.2){
+  if(noScale < 0.18){
     n.style.opacity = 0;
     n.style.pointerEvents = "none";
   }
 }
 
-/* YES -> reveal photos one by one */
+/* YES → reveal photos */
 function startReveal(){
   document.getElementById("popup").style.display="none";
   document.getElementById("revealBox").style.display="block";
@@ -196,11 +198,11 @@ function startReveal(){
   },2000);
 }
 
-/* smooth music fade */
+/* music fade in */
 function startMusic(){
   const m=document.getElementById("bgMusic");
   m.volume=0;
-  m.play();
+  m.play().catch(()=>{});
   let v=0;
   const f=setInterval(()=>{
     if(v<0.5){v+=0.01;m.volume=v;}
@@ -208,7 +210,7 @@ function startMusic(){
   },200);
 }
 
-/* floating valentine hearts */
+/* floating hearts */
 setInterval(()=>{
   const h=document.createElement("div");
   h.className="heart";
@@ -218,130 +220,7 @@ setInterval(()=>{
   h.style.animationDuration=(6+Math.random()*4)+"s";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),10000);
-},400);
-</script>
-
-</body>
-</html>  padding:12px 22px;
-  border-radius:26px;
-  font-size:1em;
-  transition:.2s;
-}
-
-/* floating lilies */
-.lily{
-  position:fixed;
-  bottom:-10px;
-  animation:floatUp linear forwards;
-}
-
-@keyframes floatUp{
-  to{
-    transform:translateY(-110vh) rotate(360deg);
-    opacity:0;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<!-- sunflower popup trigger -->
-<button class="sunflower-start" id="startBtn" onclick="openChoice()">🌻</button>
-
-<!-- popup with message and buttons -->
-<div class="popup" id="popup">
-  <div class="popup-box">
-    <div class="popup-msg">
-      wanna see something more beautiful than flowers
-    </div>
-    <div class="btn-row">
-      <button class="yes-btn" onclick="startReveal()">Yes</button>
-      <button class="no-btn" id="noBtn" onclick="shrinkNo()">No</button>
-    </div>
-  </div>
-</div>
-
-<!-- photo reveal -->
-<div class="reveal-box" id="revealBox">
-  <img id="p0" src="photo1.jpg">
-  <img id="p1" src="photo2.jpg">
-  <img id="p2" src="photo3.jpg">
-  <img id="p3" src="photo4.jpg">
-</div>
-
-<audio id="bgMusic" loop>
-  <source src="ChaarKadam.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-const photos = [
-  document.getElementById("p0"),
-  document.getElementById("p1"),
-  document.getElementById("p2"),
-  document.getElementById("p3")
-];
-
-let noScale = 1;
-
-/* open popup from sunflower */
-function openChoice(){
-  document.getElementById("startBtn").style.display="none";
-  document.getElementById("popup").style.display="flex";
-}
-
-/* shrink NO button each click */
-function shrinkNo(){
-  const n=document.getElementById("noBtn");
-  noScale *= 0.7;
-  n.style.transform = "scale("+noScale+")";
-  if(noScale < 0.2){
-    n.style.opacity = 0;
-    n.style.pointerEvents = "none";
-  }
-}
-
-/* start reveal after YES */
-function startReveal(){
-  document.getElementById("popup").style.display="none";
-  document.getElementById("revealBox").style.display="block";
-  startMusic();
-
-  let i = 0;
-  photos.forEach(p => p.style.display="none");
-
-  const interval = setInterval(()=>{
-    if(i>0) photos[i-1].style.display="none";
-    photos[i].style.display="block";
-    i++;
-    if(i === photos.length){
-      clearInterval(interval);
-    }
-  },2000);
-}
-
-function startMusic(){
-  const m=document.getElementById("bgMusic");
-  m.volume=0;
-  m.play();
-  let v=0;
-  const f=setInterval(()=>{
-    if(v<0.5){v+=0.01;m.volume=v;}
-    else clearInterval(f);
-  },200);
-}
-
-/* floating lily flowers */
-setInterval(()=>{
-  const f=document.createElement("div");
-  f.className="lily";
-  f.innerHTML="🌼";
-  f.style.left=Math.random()*100+"vw";
-  f.style.fontSize=(18+Math.random()*22)+"px";
-  f.style.animationDuration=(7+Math.random()*4)+"s";
-  document.body.appendChild(f);
-  setTimeout(()=>f.remove(),11000);
-},500);
+},450);
 </script>
 
 </body>
