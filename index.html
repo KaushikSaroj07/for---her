@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Surprise ❤️</title>
+<title>Valentine Teddy ❤️</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 
@@ -31,21 +31,16 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:64px;
+  font-size:70px;
   background:none;
   border:none;
   cursor:pointer;
-  animation:teddyBounce 1.6s infinite;
-  transition:.2s;
+  animation:bounce 1.6s infinite;
 }
 
-.teddy-start:active{
-  transform:scale(1.2);
-}
-
-@keyframes teddyBounce{
+@keyframes bounce{
   0%{transform:translateY(0);}
-  50%{transform:translateY(-14px);}
+  50%{transform:translateY(-16px);}
   100%{transform:translateY(0);}
 }
 
@@ -62,47 +57,47 @@ body{
 
 .popup-box{
   background:white;
-  padding:24px;
-  border-radius:20px;
+  padding:26px;
+  border-radius:22px;
   max-width:360px;
   width:100%;
-  box-shadow:0 15px 40px rgba(0,0,0,.25);
-}
-
-.popup-msg{
-  font-size:1.15em;
-  margin-bottom:20px;
-}
-
-.btn-row{
-  display:flex;
-  gap:16px;
-  justify-content:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
   position:relative;
 }
 
-.yes-btn, .no-btn, .music-btn{
+.popup-emoji{
+  font-size:46px;
+  margin-bottom:10px;
+}
+
+.popup-msg{
+  font-size:1.2em;
+  margin-bottom:22px;
+}
+
+.yes-btn, .no-btn{
   border:none;
-  padding:12px 24px;
+  padding:12px 26px;
   border-radius:26px;
   font-size:1em;
   box-shadow:0 8px 18px rgba(0,0,0,.2);
-  transition:.15s;
+  position:absolute;
+  bottom:18px;
 }
 
-.yes-btn{ background:#e03131; color:white; }
-.no-btn{ background:#adb5bd; color:white; position:relative; }
-.music-btn{
-  position:fixed;
-  top:14px;
-  right:14px;
-  background:#00000055;
+.yes-btn{
+  background:#e03131;
   color:white;
-  padding:10px 12px;
-  border-radius:50%;
+  left:30px;
 }
 
-/* reveal box with glow */
+.no-btn{
+  background:#adb5bd;
+  color:white;
+  right:30px;
+}
+
+/* reveal box */
 .reveal-box{
   width:320px;
   height:360px;
@@ -112,6 +107,7 @@ body{
   display:none;
   background:#fff0f3;
   animation:glow 2.5s infinite alternate;
+  position:relative;
 }
 
 @keyframes glow{
@@ -134,7 +130,7 @@ body{
   transform:scale(1.05);
 }
 
-/* final message card */
+/* final card */
 .final-card{
   position:fixed;
   inset:0;
@@ -172,20 +168,14 @@ body{
 
 <body>
 
-<button class="music-btn" onclick="toggleMusic()" id="musicBtn">🔊</button>
-
-<button class="teddy-start" id="startBtn" onclick="openChoice(); teddyBurst()">🧸</button>
+<button class="teddy-start" id="startBtn" onclick="openChoice()">🧸</button>
 
 <div class="popup" id="popup">
-  <div class="popup-box">
-    <div class="popup-msg">
-      wanna see something more beautiful than flowers
-    </div>
-    <div class="btn-row">
-      <button class="yes-btn" onclick="startReveal()">Yes</button>
-      <button class="no-btn" id="noBtn"
-        onmouseover="runNo()" onclick="shrinkNo()">No</button>
-    </div>
+  <div class="popup-box" id="popupBox">
+    <div class="popup-emoji">🧸❤️</div>
+    <div class="popup-msg">Hrudya say yes or no</div>
+    <button class="yes-btn" onclick="startReveal()">Yes</button>
+    <button class="no-btn" id="noBtn">No</button>
   </div>
 </div>
 
@@ -215,43 +205,34 @@ const photos=[
   document.getElementById("p3")
 ];
 
-let noScale=1;
-let musicOn=false;
-
-function teddyBurst(){
-  for(let i=0;i<8;i++){
-    spawnHeart(window.innerWidth/2);
-  }
-}
-
 function openChoice(){
   document.getElementById("startBtn").style.display="none";
   document.getElementById("popup").style.display="flex";
 }
 
-function runNo(){
-  const n=document.getElementById("noBtn");
-  n.style.position="absolute";
-  n.style.left=Math.random()*120-60+"px";
-  n.style.top=Math.random()*40-20+"px";
+/* NO button runs away */
+const noBtn=document.getElementById("noBtn");
+const box=document.getElementById("popupBox");
+
+function moveNo(){
+  const bw=box.clientWidth-100;
+  const bh=box.clientHeight-80;
+  noBtn.style.left=Math.random()*bw+"px";
+  noBtn.style.top=Math.random()*bh+"px";
+  noBtn.style.right="auto";
+  noBtn.style.bottom="auto";
 }
 
-function shrinkNo(){
-  const n=document.getElementById("noBtn");
-  noScale*=0.7;
-  n.style.transform="scale("+noScale+")";
-  if(noScale<0.2){
-    n.style.opacity=0;
-    n.style.pointerEvents="none";
-  }
-}
+noBtn.addEventListener("mouseover",moveNo);
+noBtn.addEventListener("touchstart",moveNo);
 
+/* reveal after YES only */
 function startReveal(){
   document.getElementById("popup").style.display="none";
-  const box=document.getElementById("revealBox");
-  box.style.display="block";
+  const rb=document.getElementById("revealBox");
+  rb.style.display="block";
   startMusic();
-  confettiBurst();
+  burstHearts();
 
   let i=0;
   const interval=setInterval(()=>{
@@ -267,29 +248,8 @@ function startReveal(){
   },2000);
 }
 
-function confettiBurst(){
-  for(let i=0;i<25;i++){
-    spawnHeart(Math.random()*window.innerWidth);
-  }
-}
-
-function spawnHeart(x){
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="❤️";
-  h.style.left=x+"px";
-  h.style.fontSize=(14+Math.random()*24)+"px";
-  h.style.animationDuration=(5+Math.random()*3)+"s";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),9000);
-}
-
-setInterval(()=>spawnHeart(Math.random()*window.innerWidth),500);
-
 function startMusic(){
   const m=document.getElementById("bgMusic");
-  if(musicOn) return;
-  musicOn=true;
   m.volume=0;
   m.play().catch(()=>{});
   let v=0;
@@ -299,12 +259,23 @@ function startMusic(){
   },200);
 }
 
-function toggleMusic(){
-  const m=document.getElementById("bgMusic");
-  const b=document.getElementById("musicBtn");
-  if(m.paused){ m.play(); b.innerHTML="🔊"; }
-  else { m.pause(); b.innerHTML="🔇"; }
+/* hearts */
+function burstHearts(){
+  for(let i=0;i<25;i++) spawnHeart();
 }
+
+function spawnHeart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(14+Math.random()*24)+"px";
+  h.style.animationDuration=(5+Math.random()*3)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),9000);
+}
+
+setInterval(spawnHeart,500);
 </script>
 
 </body>
