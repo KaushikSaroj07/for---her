@@ -29,7 +29,7 @@ text-align:center;
 
 .teddy{
 position:absolute;
-top:30%;
+top:28%;
 left:-120px;
 font-size:95px;
 animation:walk 2.5s forwards;
@@ -39,30 +39,22 @@ animation:walk 2.5s forwards;
 to{left:50%; transform:translateX(-50%);}
 }
 
-.teddy.idle{
+.teddy.look{
 animation:bounce 2s infinite;
+transform:translateX(-50%) rotate(8deg);
 }
 
 @keyframes bounce{
-0%{transform:translate(-50%,0)}
-50%{transform:translate(-50%,-15px)}
-100%{transform:translate(-50%,0)}
-}
-
-/* eyes looking */
-
-.eyes{
-position:absolute;
-top:-10px;
-left:35px;
-font-size:18px;
+0%{transform:translate(-50%,0) rotate(8deg)}
+50%{transform:translate(-50%,-12px) rotate(8deg)}
+100%{transform:translate(-50%,0) rotate(8deg)}
 }
 
 /* message */
 
 .message{
 position:absolute;
-top:58%;
+top:55%;
 left:50%;
 transform:translateX(-50%);
 font-size:20px;
@@ -75,7 +67,12 @@ min-height:60px;
 /* buttons */
 
 .buttons{
-margin-top:20px;
+position:absolute;
+top:65%;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:20px;
 }
 
 .btn{
@@ -95,7 +92,6 @@ color:white;
 .no{
 background:#adb5bd;
 color:white;
-margin-left:15px;
 position:absolute;
 }
 
@@ -152,6 +148,29 @@ opacity:0;
 }
 }
 
+/* photo reveal */
+
+.photo-stage{
+display:none;
+position:fixed;
+inset:0;
+background:black;
+}
+
+.photo{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+opacity:0;
+transition:opacity 1s;
+}
+
+.photo.show{
+opacity:1;
+}
+
 </style>
 </head>
 
@@ -174,6 +193,13 @@ no doubt about it
 </div>
 </div>
 
+<div class="photo-stage" id="photoStage">
+<img class="photo" src="photo1.jpg">
+<img class="photo" src="photo2.jpg">
+<img class="photo" src="photo3.jpg">
+<img class="photo" src="photo4.jpg">
+</div>
+
 <script>
 
 /* typing message */
@@ -182,34 +208,30 @@ const text="what you doing my sweety, are you missing me"
 let i=0
 
 function type(){
-
 if(i<text.length){
 document.getElementById("msg").innerHTML+=text.charAt(i)
 i++
 setTimeout(type,60)
 }
 else{
-document.getElementById("buttons").style.display="block"
+document.getElementById("buttons").style.display="flex"
+}
 }
 
-}
-
-/* teddy animation start */
+/* teddy enters then looks */
 
 setTimeout(()=>{
-document.getElementById("teddy").classList.add("idle")
+document.getElementById("teddy").classList.add("look")
 type()
 },2500)
 
-/* NO button runs away */
+/* NO button runs */
 
 const noBtn=document.getElementById("noBtn")
 
 function moveNo(){
-
 noBtn.style.left=Math.random()*80+"vw"
 noBtn.style.top=Math.random()*70+"vh"
-
 }
 
 noBtn.addEventListener("mouseover",moveNo)
@@ -218,54 +240,33 @@ noBtn.addEventListener("touchstart",moveNo)
 /* hearts */
 
 function heartBurst(){
-
 for(let i=0;i<20;i++){
-
 const h=document.createElement("div")
-
 h.className="heart"
-
 h.innerHTML="❤️"
-
 h.style.left=Math.random()*100+"vw"
-
 h.style.bottom="0"
-
 document.body.appendChild(h)
-
 setTimeout(()=>h.remove(),4000)
-
 }
-
 }
 
 /* confetti */
 
 function confettiExplosion(){
-
 for(let i=0;i<100;i++){
-
 const c=document.createElement("div")
-
 c.className="confetti"
-
 const emojis=["🎉","🎊","✨","💛","⭐"]
-
 c.innerHTML=emojis[Math.floor(Math.random()*emojis.length)]
-
 c.style.left=Math.random()*100+"vw"
-
 c.style.animationDuration=(3+Math.random()*3)+"s"
-
 document.body.appendChild(c)
-
 setTimeout(()=>c.remove(),6000)
-
+}
 }
 
-}
-
-/* yes */
+/* yes action */
 
 function yesAction(){
 
@@ -281,7 +282,41 @@ document.getElementById("celebration").style.display="flex"
 
 confettiExplosion()
 
-},700)
+setTimeout(startPhotos,3500)
+
+},800)
+
+}
+
+/* photo reveal */
+
+function startPhotos(){
+
+document.getElementById("celebration").style.display="none"
+
+const stage=document.getElementById("photoStage")
+stage.style.display="block"
+
+const photos=[...document.querySelectorAll(".photo")]
+
+let i=0
+
+photos[i].classList.add("show")
+
+setInterval(()=>{
+
+photos[i].classList.remove("show")
+
+i++
+
+if(i>=photos.length){
+i=photos.length-1
+return
+}
+
+photos[i].classList.add("show")
+
+},2000)
 
 }
 
